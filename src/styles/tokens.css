@@ -1,0 +1,145 @@
+/* Hallmark · shape: custom · genre: editorial · theme: custom · job: visit · idea: "Поруч — поіменно: близькість доведена назвами населених пунктів і точними цифрами" · vibe: "точна, місцева, спокійна, впевнена" · paper: #FFFFFF + field #0E4630 · surface: absolute · accent: #C42F3D · display: Geologica · body: IBM Plex Sans · hero: зелене поле з H1, пошуком, дзвінком і результатами, внизу краєвий рядок 25 населених пунктів · nav: біла закріплена шапка, 6 якорів + «Результати онлайн» · footer: білий, телефон великим · imagery: client photos (довіра) · signature: краєвий рядок → покажчик міст · axes: light/grotesk-geometric/chromatic-red · posture: committed · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: P, a lab page argues little by nature; the argument is carried by naming 25 places and exact prices instead of a slogan */
+/* Hallmark · waive 7b · paper #FFFFFF is the approved concept surface, text #13231B on it 16.4:1 · the client brand is white-and-green medical paper, concept.md palette is approved */
+/* Hallmark · answered F4 · one filled recipe per surface: white call button on the green field, red call button on white and mint, green results button in the header only */
+/* Hallmark · waive 44c · figures 52 and 4 on columns 9 to 12, top-aligned with the H1 by the lead's fix list · the hero is a custom composition: company figures sit at the top beside the headline, not centred on the search and buttons */
+/* Client design tokens: only from design/concept.md (veon-concept: colors, fonts). */
+
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+  src: url("../assets/fonts/geologica-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Geologica";
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+  src: url("../assets/fonts/geologica-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("../assets/fonts/ibm-plex-sans-cyrillic.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+  src: url("../assets/fonts/ibm-plex-sans-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* Metric fallbacks: keep the line boxes close while the WOFF2 loads (CLS 0). */
+@font-face {
+  font-family: "Geologica Fallback";
+  src: local("Arial");
+  size-adjust: 104%;
+  ascent-override: 92%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Plex Fallback";
+  src: local("Arial");
+  size-adjust: 101%;
+  ascent-override: 101%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+}
+
+:root {
+  /* Palette (concept.md § 8) */
+  --color-bg: #FFFFFF;
+  --color-field: #0E4630;
+  --color-primary: #1E7A4C;
+  --color-action: #C42F3D;
+  --color-surface-alt: #E4F0E9;
+  --color-text: #13231B;
+  --color-muted: #4A5B52;
+  --color-on-field: #FFFFFF;
+  --color-on-field-muted: #B7D9C5;
+  --color-border: #C9D6CE;
+  --color-accent: var(--color-action);
+  --color-accent-ink: #FFFFFF;
+  --color-focus: var(--color-primary);
+  --color-focus-on-field: var(--color-on-field);
+  --color-primary-hover: var(--color-field);
+  --color-action-hover: color-mix(in oklab, var(--color-action) 82%, var(--color-text));
+  --color-scrim: color-mix(in oklab, var(--color-text) 55%, transparent);
+
+  /* Type */
+  --font-display: "Geologica", "Geologica Fallback", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", "Plex Fallback", system-ui, sans-serif;
+  --text-display: clamp(2.25rem, 1.05rem + 3.4vw, 4.5rem);
+  --text-statement: clamp(4.5rem, 2rem + 8vw, 9rem);
+  --text-section: clamp(1.75rem, 1.2rem + 1.7vw, 2.5rem);
+  --text-figure: clamp(2.25rem, 1.55rem + 2.2vw, 3.5rem);
+  --text-hero-figure: clamp(5rem, 1rem + 8.4vw, 8.5rem);
+  --text-index: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+  --text-phone: clamp(1.75rem, 1.4rem + 1vw, 2rem);
+  --text-title: clamp(1.25rem, 1.15rem + .35vw, 1.375rem);
+  --text-lead: clamp(1.25rem, 1.15rem + .35vw, 1.375rem);
+  --text-ribbon: clamp(1.0625rem, 1rem + .3vw, 1.25rem);
+  --text-md: 1.0625rem;
+  --text-sm: .9375rem;
+  --weight-display: 600;
+  --weight-index: 500;
+  --weight-body: 400;
+  --weight-ui: 500;
+  --leading-tight: 1.08;
+  --leading-head: 1.15;
+  --leading-body: 1.55;
+
+  /* Space: 8-step rhythm */
+  --space-2xs: .25rem;
+  --space-xs: .5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 7rem;
+  --space-section: clamp(4.5rem, 2.6rem + 5.4vw, 7rem);
+  --space: clamp(1.25rem, 5vw, 4rem);
+  --gutter: 1.5rem;
+  --container: 1200px;
+
+  /* Shape and controls */
+  --radius: 6px;
+  --radius-chip: 999px;
+  --control-h: 3.25rem;
+  --control-h-desktop: 3rem;
+  --line: 1px;
+  --ring: 3px;
+  --header-h: 3.5rem;
+  --logo: 2.75rem;
+  --bar-h: 4.25rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: 200ms;
+  --dur-ui: 250ms;
+  --dur-swap: 300ms;
+  --dur: 500ms;
+  --dur-ribbon: 800ms;
+  --stagger: 80ms;
+
+  --z-header: 50;
+  --z-bar: 40;
+  --z-tip: 60;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-h: 5rem;
+    --logo: 3.5rem;
+  }
+}

@@ -1,0 +1,40 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Prices from "../components/Prices.astro";
+import Points from "../components/Points.astro";
+import Nurse from "../components/Nurse.astro";
+import Promo from "../components/Promo.astro";
+import Trust from "../components/Trust.astro";
+import Clinics from "../components/Clinics.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import { phone, emails, socials } from "../data/site";
+
+const title = "Медична лабораторія Астра-Діа — аналізи в Ужгороді та по Закарпаттю";
+const description = "52 пункти забору по Закарпаттю, ціни й терміни аналізів, результати онлайн, виклик медсестри додому. Телефон 0 800 35 52 36.";
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": ["MedicalOrganization", "DiagnosticLab"],
+  name: "Астра-Діа",
+  legalName: "ПП «АСТРА-ДІА»",
+  telephone: phone.href.replace("tel:", ""),
+  email: emails.info,
+  areaServed: "Закарпатська область",
+  sameAs: socials.map((s) => s.href),
+};
+---
+<Base lang="uk" title={title} description={description} rec="W-R005,W-R016,W-R034">
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <Header slot="header" />
+  <Hero />
+  <Prices />
+  <Points />
+  <Nurse />
+  <Promo />
+  <Trust />
+  <Clinics />
+  <Footer slot="footer" />
+  <MobileBar slot="footer" />
+</Base>

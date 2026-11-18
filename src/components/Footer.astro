@@ -1,0 +1,83 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/astra-logo.png";
+import FutureLink from "./FutureLink.astro";
+import { phone, emails, socials, legalName } from "../data/site";
+const future = ["Каталог аналізів", "Підготовка до аналізів", "Новини", "Контакти", "Публічна оферта", "Згода пацієнта", "Політика конфіденційності"];
+---
+<footer class="site-footer">
+  <div class="container site-footer__grid">
+    <div class="site-footer__brand">
+      <a class="site-footer__logo" href="#holovna" aria-label="Астра-Діа: на початок сторінки">
+        <Image src={logo} alt="" width={160} height={160} format="webp" quality={85} loading="lazy" />
+      </a>
+      <p><strong>Астра-Діа</strong>, медична лабораторія.<br />{legalName}</p>
+    </div>
+
+    <div class="site-footer__contact">
+      <a class="site-footer__phone num" href={phone.href}>{phone.display}</a>
+      <p class="site-footer__hint">Не вдається увійти в кабінет результатів? Телефонуйте.</p>
+      <ul class="site-footer__list" role="list">
+        <li><a href={`mailto:${emails.info}`}>{emails.info}</a></li>
+        <li><a href={`mailto:${emails.b2b}`}>{emails.b2b}</a> <span class="site-footer__muted">для клінік і лікарів</span></li>
+      </ul>
+      <ul class="site-footer__social" role="list" aria-label="Соцмережі" data-rec="S-R013">
+        {socials.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.name}<span class="visually-hidden"> (нова вкладка)</span></a></li>)}
+      </ul>
+    </div>
+
+    <nav class="site-footer__future" aria-label="Розділи повної версії сайту">
+      <ul role="list">
+        {future.map((f) => <li><FutureLink up>{f}</FutureLink></li>)}
+      </ul>
+    </nav>
+  </div>
+  <div class="container site-footer__base">
+    <p>&copy; {new Date().getFullYear()} {legalName}</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--color-bg); border-top: var(--line) solid var(--color-border); padding-block: var(--space-2xl) var(--space-lg); }
+  .site-footer__grid { display: grid; gap: var(--space-xl); }
+  .site-footer__brand { display: grid; gap: var(--space-sm); align-content: start; color: var(--color-muted); }
+  .site-footer__brand strong { color: var(--color-text); font-weight: var(--weight-ui); }
+  .site-footer__logo { display: block; width: 5rem; border-radius: 50%; }
+  .site-footer__logo :global(img) { width: 5rem; height: 5rem; }
+
+  .site-footer__contact { display: grid; gap: var(--space-sm); align-content: start; }
+  .site-footer__phone {
+    font-family: var(--font-display); font-weight: var(--weight-display);
+    font-size: var(--text-phone); line-height: 1.1;
+    color: var(--color-action); text-decoration: none; white-space: nowrap;
+    justify-self: start;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .site-footer__phone:hover { color: var(--color-action-hover); text-decoration: underline; text-decoration-thickness: 2px; }
+  .site-footer__phone:active { color: var(--color-text); }
+  .site-footer__hint, .site-footer__muted { color: var(--color-muted); font-size: var(--text-sm); }
+  .site-footer__list, .site-footer__social { list-style: none; display: flex; flex-wrap: wrap; column-gap: var(--space-md); }
+  .site-footer__list { flex-direction: column; }
+  .site-footer__list a, .site-footer__social a {
+    display: inline-flex; align-items: center; min-height: 44px;
+    color: var(--color-primary); font-weight: var(--weight-ui);
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .2em;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .site-footer__list a:hover, .site-footer__social a:hover { color: var(--color-field); text-decoration-thickness: 2px; }
+  .site-footer__list a:active, .site-footer__social a:active { color: var(--color-text); }
+  .site-footer__future ul { list-style: none; display: grid; }
+  .site-footer__future :global(.future-link) { font-weight: var(--weight-body); color: var(--color-text); }
+
+  .site-footer__base { margin-top: var(--space-xl); padding-top: var(--space-md); border-top: var(--line) solid var(--color-border); color: var(--color-muted); font-size: var(--text-sm); }
+
+  @media (min-width: 48rem) {
+    .site-footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .site-footer__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+    .site-footer__brand { grid-column: 1 / span 3; }
+    .site-footer__contact { grid-column: 4 / span 5; }
+    .site-footer__future { grid-column: 10 / span 3; }
+  }
+</style>

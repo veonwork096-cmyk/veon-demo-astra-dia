@@ -1,0 +1,86 @@
+---
+import { Picture } from "astro:assets";
+import FutureLink from "./FutureLink.astro";
+import labCobas from "../assets/lab-cobas-e411.jpg";
+import labRoche from "../assets/lab-roche-hitachi.jpg";
+---
+<section id="pro-nas" class="section trust" aria-labelledby="pro-nas-title">
+  <div class="container trust__grid">
+    <div class="trust__head">
+      <h2 id="pro-nas-title">Чому нам довіряють</h2>
+      <p class="lead">Працюємо з&nbsp;2008 року, у команді близько 250 фахівців.</p>
+    </div>
+
+    <figure class="trust__photo trust__photo--main" data-rec="W-R006">
+      <Picture
+        src={labCobas}
+        formats={["avif", "webp"]}
+        widths={[480, 800, 1200]}
+        sizes="(min-width: 64rem) 680px, 100vw"
+        alt="Співробітниця лабораторії Астра-Діа біля аналізатора cobas e 411"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>Лабораторія Астра-Діа: аналізатор cobas e&nbsp;411</figcaption>
+    </figure>
+
+    <ul class="facts" role="list">
+      <li>Близько <strong class="num">1300</strong> лабораторних досліджень для пацієнтів і закладів охорони здоров'я.</li>
+      <li>Обладнання <strong class="facts__brands">Roche, Sysmex, Siemens, Euroimmun</strong>.</li>
+    </ul>
+
+    <div class="quality">
+      <p><strong>Контроль якості:</strong> міжнародні програми Randox, RIQAS, Prevecal і вітчизняна програма Охматдит.</p>
+      <p class="quality__iso">В процесі акредитації на відповідність ISO&nbsp;15189:2022.</p>
+      <div class="quality__links">
+        <FutureLink note="Документи з'являться в повній версії сайту">Документи лабораторії</FutureLink>
+        <FutureLink note="Сторінка про лабораторію з'явиться в повній версії сайту">Про лабораторію детально</FutureLink>
+      </div>
+    </div>
+
+    <figure class="trust__photo trust__photo--second">
+      <Picture
+        src={labRoche}
+        formats={["avif", "webp"]}
+        widths={[480, 800]}
+        sizes="(min-width: 64rem) 480px, 100vw"
+        alt="Робоче місце біля аналізатора Roche Hitachi"
+        loading="lazy"
+        decoding="async"
+      />
+      <figcaption>Робоче місце біля аналізатора Roche Hitachi</figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .trust__grid { display: grid; gap: var(--space-xl); }
+  .trust__photo { margin: 0; display: grid; gap: var(--space-xs); }
+  .trust__photo :global(img) { width: 100%; height: auto; border-radius: var(--radius); aspect-ratio: 3 / 2; object-fit: cover; }
+  .trust__photo figcaption { font-size: var(--text-sm); color: var(--color-muted); }
+
+  .trust__head { display: grid; gap: var(--space-sm); }
+  .facts { list-style: none; display: grid; gap: var(--space-xl); align-content: center; }
+  .facts li {
+    font-family: var(--font-display); font-weight: var(--weight-index);
+    font-size: var(--text-lead); line-height: 1.3;
+    max-width: 26ch;
+  }
+  .facts strong { font-size: var(--text-figure); line-height: 1; font-weight: var(--weight-display); color: var(--color-primary); }
+
+  .quality { display: grid; gap: var(--space-sm); align-content: start; max-width: 60ch; }
+  .facts .facts__brands { font-size: var(--text-title); color: var(--color-text); }
+  .quality strong { font-weight: var(--weight-ui); }
+  .quality__iso { font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-title); color: var(--color-field); }
+  .quality__links { display: flex; flex-wrap: wrap; column-gap: var(--space-lg); }
+  .quality__links :global(.future-link) { color: var(--color-primary); }
+
+  @media (min-width: 64rem) {
+    .trust__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--space-2xl); }
+    .trust__head { grid-column: 1 / -1; }
+    .trust__photo--main { grid-column: 1 / span 7; }
+    .facts { grid-column: 9 / span 4; }
+    .quality { grid-column: 1 / span 6; align-self: center; }
+    .trust__photo--second { grid-column: 8 / span 5; }
+  }
+</style>

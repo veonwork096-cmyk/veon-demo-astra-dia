@@ -1,0 +1,43 @@
+---
+// The signature index: 25 settlements as a typographic switch (client: company.geography). Script lives in Points.astro.
+import { places } from "../data/site";
+const HOME = "Ужгород";
+---
+<ul class="index" role="list" aria-label="Населені пункти з пунктами забору" data-index>
+  {places.map((p) => (
+    <li><button type="button" class="index__item" aria-pressed={p === HOME ? "true" : "false"} aria-controls="points-panel" data-city={p}>{p}</button></li>
+  ))}
+</ul>
+
+<style>
+  .index {
+    list-style: none;
+    display: flex; flex-wrap: wrap; align-items: baseline;
+    column-gap: var(--space-md); row-gap: var(--space-2xs);
+    padding-bottom: var(--space-lg);
+    border-bottom: var(--line) solid var(--color-border);
+  }
+  .index__item {
+    position: relative;
+    min-height: 44px;
+    padding: 0;
+    border: 0; background: none; cursor: pointer;
+    font-family: var(--font-display); font-weight: var(--weight-index);
+    font-size: var(--text-index); line-height: 1.2;
+    color: var(--color-text);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+  .index__item::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 3px;
+    background: var(--color-primary);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform var(--dur-ui) var(--ease-out);
+  }
+  .index__item:hover { color: var(--color-primary); }
+  .index__item:active { color: var(--color-field); }
+  .index__item:disabled { color: var(--color-muted); cursor: not-allowed; }
+  .index__item[aria-pressed="true"] { color: var(--color-primary); font-weight: var(--weight-display); }
+  .index__item[aria-pressed="true"]::after { transform: scaleX(1); }
+  @media (min-width: 64rem) { .index { column-gap: var(--space-lg); } }
+  @media (prefers-reduced-motion: reduce) { .index__item::after { transition: none; } }
+</style>

@@ -1,0 +1,43 @@
+---
+import Icon from "./Icon.astro";
+import { phone, results } from "../data/site";
+---
+<div class="mobile-bar" role="region" aria-label="Швидкі дії" data-rec="W-R010,G-R002,MA-R002" data-mobile-bar>
+  <a class="btn btn--action" href={phone.href}><Icon name="phone" /><span>Подзвонити</span></a>
+  <a class="btn btn--primary" href={results.href} target="_blank" rel="noopener"><span>Результати</span><Icon name="external" /><span class="visually-hidden">({results.note} у новій вкладці)</span></a>
+</div>
+
+<script>
+  // The bar duplicates the hero buttons, so it slides in only after those buttons leave the screen.
+  const bar = document.querySelector<HTMLElement>("[data-mobile-bar]");
+  const actions = document.querySelector<HTMLElement>("[data-hero-actions]");
+  if (bar && actions && "IntersectionObserver" in window) {
+    bar.classList.add("is-hidden");
+    new IntersectionObserver(([entry]) => {
+      const hidden = entry.isIntersecting || entry.boundingClientRect.top > 0;
+      bar.classList.toggle("is-hidden", hidden);
+      bar.toggleAttribute("inert", hidden);
+    }).observe(actions);
+  }
+</script>
+
+<style>
+  .mobile-bar {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-bar);
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-sm) calc(var(--space-xs) + env(safe-area-inset-bottom));
+    background: var(--color-bg);
+    border-top: var(--line) solid var(--color-border);
+    transition: transform var(--dur-ui) var(--ease-out), opacity var(--dur-ui) var(--ease-out);
+  }
+  .mobile-bar.is-hidden { transform: translateY(100%); opacity: 0; }
+  .mobile-bar .btn { padding-inline: var(--space-sm); }
+  :global(body) { padding-bottom: var(--bar-h); }
+  @media (min-width: 48rem) {
+    .mobile-bar { display: none; }
+    :global(body) { padding-bottom: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-bar { transition: none; }
+  }
+</style>

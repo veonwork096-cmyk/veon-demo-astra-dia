@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import Icon from "../components/Icon.astro";
+import { phone } from "../data/site";
+const home = import.meta.env.BASE_URL;
+---
+<Base lang="uk" title="Сторінку не знайдено — Астра-Діа" description="Такої сторінки немає. Поверніться на головну або зателефонуйте 0 800 35 52 36.">
+  <section class="nf on-field">
+    <div class="container nf__inner">
+      <h1>Сторінку не знайдено</h1>
+      <p class="nf__text">Можливо, адресу введено з помилкою. Ціни, пункти забору і результати онлайн є на головній.</p>
+      <div class="nf__actions">
+        <a class="btn btn--paper" href={home}>На головну</a>
+        <a class="btn btn--outline-light" href={phone.href}><Icon name="phone" /><span>{phone.display}</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { background: var(--color-field); color: var(--color-on-field); min-height: 100svh; display: grid; align-items: center; padding-block: var(--space-2xl); }
+  .nf__inner { display: grid; gap: var(--space-md); justify-items: start; }
+  .nf__text { font-size: var(--text-lead); color: var(--color-on-field-muted); max-width: 40ch; }
+  .nf__actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+</style>

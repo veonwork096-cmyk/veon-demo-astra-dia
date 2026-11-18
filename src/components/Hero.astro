@@ -1,0 +1,212 @@
+---
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import { phone, results, places, searchChips } from "../data/site";
+const H1 = "Аналізи поруч з домом — у 25 населених пунктах Закарпаття";
+const SEARCH_NOTE = "Пошук і онлайн-замовлення аналізів з'являться в повній версії сайту";
+---
+<section id="holovna" class="hero on-field" data-rec="W-R001,W-R008,W-R027,W-R029,W-R036,G-R001,MA-R003,G-R002,MA-R002" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__main">
+      <h1 id="hero-title" data-rec="W-R019,W-R004,W-R028">{H1}</h1>
+
+      <div class="search" data-rec="W-R009">
+        <label class="visually-hidden" for="analysis-search">Пошук аналізу</label>
+        <div class="search__row">
+          <span class="search__icon"><Icon name="search" /></span>
+          <input id="analysis-search" class="search__input" type="search" name="q" autocomplete="off" placeholder="Назва аналізу, напр. ЗАК" />
+          <FutureLink class="search__btn" align="end" note={SEARCH_NOTE}>Знайти</FutureLink>
+        </div>
+        <ul class="chips" aria-label="Популярні аналізи">
+          {searchChips.map((chip, i) => (
+            <li><FutureLink class="chip" align={i > 1 ? "end" : "start"}>{chip}</FutureLink></li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="hero__actions" data-hero-actions>
+        <a class="btn btn--paper" href={phone.href} data-rec="W-R035">
+          <Icon name="phone" />
+          <span><span class="btn__word">Подзвонити </span><span class="btn__num num">{phone.display}</span></span>
+        </a>
+        <a class="btn btn--outline-light" href={results.href} target="_blank" rel="noopener">
+          <span>{results.label}</span>
+          <Icon name="external" />
+          <span class="visually-hidden">({results.note} у новій вкладці)</span>
+        </a>
+      </div>
+      <a class="text-link hero__nurse" href="#vyklyk">
+        Виклик медсестри додому
+        <Icon name="arrow" class="btn__arrow" />
+      </a>
+    </div>
+
+    <ul class="hero__facts" role="list" aria-label="Мережа лабораторії за даними компанії">
+      <li><span class="hero__fig num">52</span> <span class="hero__lbl">пункти забору</span></li>
+      <li><span class="hero__fig num">4</span> <span class="hero__lbl">лабораторні центри</span></li>
+    </ul>
+  </div>
+
+  <a class="ribbon" href="#punkty" aria-label="Пункти забору в 25 населених пунктах: перейти до переліку">
+    <span class="ribbon__track" aria-hidden="true">
+      {places.map((p) => <span class="ribbon__item">{p}</span>)}
+    </span>
+  </a>
+</section>
+
+<style>
+  .hero {
+    background: var(--color-field);
+    color: var(--color-on-field);
+    display: flex; flex-direction: column;
+    padding-top: var(--space-md);
+    gap: var(--space-md);
+  }
+  .hero__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+  .hero__main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); min-width: 0; }
+  h1 { font-size: var(--text-display); line-height: var(--leading-tight); max-width: 15ch; text-wrap: balance; }
+
+  .search { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-sm); }
+  .search__row { position: relative; display: flex; align-items: stretch; gap: var(--space-xs); }
+  .search__icon { position: absolute; left: var(--space-sm); top: 50%; transform: translateY(-50%); color: var(--color-muted); pointer-events: none; }
+  .search__input {
+    flex: 1; min-width: 0; height: var(--control-h);
+    border: 2px solid var(--color-bg); border-radius: var(--radius);
+    background: var(--color-bg); color: var(--color-text);
+    font: var(--weight-body) var(--text-md)/1.3 var(--font-body);
+    padding-inline: var(--space-xl) var(--space-sm);
+  }
+  .search__input::placeholder { color: var(--color-muted); opacity: 1; }
+  @media (max-width: 29.99rem) {
+    .search__icon { display: none; }
+    .search__input { padding-inline: var(--space-sm); }
+    .search :global(.search__btn) { padding-inline: var(--space-sm); }
+  }
+  .search__input:hover { border-color: var(--color-surface-alt); }
+  .search__input:focus-visible { outline: var(--ring) solid var(--color-focus-on-field); outline-offset: 2px; }
+  .search__input:disabled { opacity: .55; cursor: not-allowed; }
+  .search :global(.search__btn) {
+    flex: none; justify-content: center;
+    padding-inline: var(--space-md);
+    height: var(--control-h);
+    border-radius: var(--radius);
+    background: var(--color-surface-alt); color: var(--color-field);
+    text-decoration: underline dotted; text-decoration-thickness: 2px; text-underline-offset: .25em;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .search :global(.search__btn:hover) { background: var(--color-border); }
+  .search :global(.search__btn:focus-visible) { outline-color: var(--color-focus-on-field); outline-offset: 2px; }
+
+  .chips {
+    display: flex; flex-wrap: nowrap; gap: var(--space-xs); list-style: none;
+    overflow-x: auto; scrollbar-width: none; overscroll-behavior-x: contain;
+    margin-inline: calc(-1 * var(--space)); padding-inline: var(--space);
+  }
+  .chips::-webkit-scrollbar { display: none; }
+  .chips li { flex: none; }
+  .chips :global(.chip) {
+    min-height: 44px; padding-inline: var(--space-sm);
+    border: var(--line) solid var(--color-on-field-muted); border-radius: var(--radius-chip);
+    color: var(--color-on-field); font-size: var(--text-sm);
+    text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: .3em;
+    transition: background-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
+  }
+  .chips :global(.chip:hover) { background: var(--color-on-field); color: var(--color-field); }
+  .chips :global(.chip:active) { transform: scale(.98); }
+
+  .hero__actions { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-xs); }
+  .hero__actions .btn { width: 100%; }
+  .hero__nurse { color: var(--color-on-field); justify-self: start; }
+  .hero__nurse:hover { color: var(--color-on-field-muted); }
+  .hero__nurse:active { color: var(--color-on-field); }
+
+  /* Phone: one line «52 пункти забору 4 лабораторні центри». Desktop: two big figures (W-F002, company statement). */
+  .hero__facts {
+    list-style: none; display: flex; flex-wrap: wrap; column-gap: var(--space-md); row-gap: var(--space-2xs);
+    font-family: var(--font-display); font-weight: var(--weight-index);
+    font-size: var(--text-md); line-height: 1.3;
+    color: var(--color-on-field-muted);
+  }
+  .hero__fig { color: var(--color-on-field); font-weight: var(--weight-display); }
+
+  /* Signature: the regional row. Mobile: a scrollable strip of 44px chips. */
+  .ribbon {
+    display: block; color: var(--color-on-field-muted); text-decoration: none;
+    overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none;
+    padding-block: var(--space-sm) var(--space-md);
+    border-top: var(--line) solid color-mix(in oklab, var(--color-on-field-muted) 35%, transparent);
+  }
+  .ribbon::-webkit-scrollbar { display: none; }
+  .ribbon__track {
+    display: flex; gap: var(--space-xs); width: max-content;
+    padding-inline: max(var(--space), (100% - var(--container)) / 2);
+  }
+  .ribbon__item {
+    display: inline-flex; align-items: center; min-height: 44px;
+    padding-inline: var(--space-sm);
+    border: var(--line) solid color-mix(in oklab, var(--color-on-field-muted) 45%, transparent);
+    border-radius: var(--radius-chip);
+    font-family: var(--font-display); font-weight: var(--weight-index); font-size: var(--text-md);
+    white-space: nowrap;
+  }
+  .ribbon:hover .ribbon__item { color: var(--color-on-field); }
+  .ribbon:focus-visible { outline-offset: -6px; }
+
+  @media (min-width: 30rem) {
+    .hero__actions { grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+  }
+
+  @media (min-width: 48rem) {
+    .chips { flex-wrap: wrap; overflow: visible; margin-inline: 0; padding-inline: 0; }
+    .hero { padding-top: var(--space-2xl); gap: var(--space-xl); }
+    .hero__actions { display: flex; flex-wrap: wrap; }
+    .hero__actions .btn { width: auto; }
+    .ribbon { overflow: hidden; padding-block: var(--space-md); }
+    .ribbon__track { gap: 0; }
+    .ribbon__item {
+      border: 0; border-radius: 0; min-height: 0;
+      padding-inline: var(--space-lg);
+      font-size: var(--text-ribbon);
+      border-inline-start: var(--line) solid color-mix(in oklab, var(--color-on-field-muted) 40%, transparent);
+    }
+    .ribbon__item:first-child { padding-inline-start: 0; border-inline-start: 0; }
+    .ribbon__track {
+      transition: transform var(--dur-ui) var(--ease-out);
+    }
+    .ribbon:hover .ribbon__track { transform: translateX(-4px); }
+  }
+
+  @media (min-width: 64rem) {
+    .hero { min-height: min(calc(100svh - var(--header-h)), 45rem); justify-content: space-between; padding-top: var(--space-2xl); }
+    .hero__grid {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter); align-items: start;
+    }
+    .hero__main { grid-column: 1 / span 7; gap: var(--space-lg); }
+    .search { gap: var(--space-sm); }
+    .hero__main { grid-row: 1; }
+    .hero__facts {
+      grid-column: 9 / span 4; grid-row: 1; align-self: start;
+      display: grid; row-gap: var(--space-xl);
+      padding-inline-start: var(--space-lg);
+      border-inline-start: var(--line) solid var(--color-on-field-muted);
+    }
+    .hero__facts li { display: grid; }
+    .hero__fig { font-size: var(--text-hero-figure); line-height: .95; }
+    .hero__lbl { font-size: var(--text-lead); color: var(--color-on-field-muted); }
+  }
+
+  /* Effect 1: the regional row is revealed left to right once (clip-path), H1 and actions are visible at once. */
+  @media (min-width: 48rem) and (prefers-reduced-motion: no-preference) {
+    .ribbon__track { animation: ribbon-in var(--dur-ribbon) var(--ease-out) 200ms both; }
+  }
+  @keyframes ribbon-in {
+    from { clip-path: inset(0 100% 0 0); }
+    to { clip-path: inset(0 0 0 0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ribbon__track { animation: none; }
+    .ribbon:hover .ribbon__track { transform: none; }
+    .chips :global(.chip:active) { transform: none; }
+  }
+</style>

@@ -1,0 +1,73 @@
+---
+import FutureLink from "./FutureLink.astro";
+import Icon from "./Icon.astro";
+import { nurseCities, nurseTariffs, phone } from "../data/site";
+---
+<section id="vyklyk" class="section nurse" data-rec="W-R012" aria-labelledby="vyklyk-title">
+  <div class="container nurse__grid">
+    <div class="nurse__head">
+      <h2 id="vyklyk-title">Виклик медсестри додому</h2>
+      <p class="nurse__cities">{nurseCities.join(", ")}</p>
+      <p class="nurse__text">Медсестра приїде службовим транспортом і візьме біоматеріал удома. Після дзвінка працівник уточнить деталі.</p>
+    </div>
+
+    <div class="nurse__body">
+      <table class="tariffs">
+        <caption class="visually-hidden">Вартість виклику медсестри</caption>
+        <tbody>
+          {nurseTariffs.map((t, i) => (
+            <tr data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <th scope="row">{t.cond}</th>
+              <td class="num">{t.price}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div class="nurse__actions">
+        <a class="btn btn--action" href={phone.href}>
+          <Icon name="phone" />
+          <span><span class="btn__word">Викликати: </span><span class="num">{phone.display}</span></span>
+        </a>
+        <FutureLink note="Онлайн-заявка з'явиться в повній версії сайту">Детальніше про виїзд</FutureLink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .nurse { background: var(--color-surface-alt); }
+  .nurse__grid { display: grid; gap: var(--space-xl); }
+  .nurse__head { display: grid; gap: var(--space-md); align-content: start; }
+  .nurse__cities {
+    font-family: var(--font-display); font-weight: var(--weight-display);
+    font-size: var(--text-figure); line-height: 1.1; color: var(--color-field);
+  }
+  .nurse__text { color: var(--color-muted); max-width: 40ch; }
+
+  .tariffs { width: 100%; border-collapse: collapse; }
+  .tariffs tr { border-bottom: var(--line) solid var(--color-border); }
+  .tariffs tr:first-child { border-top: 3px solid var(--color-text); }
+  .tariffs th, .tariffs td { padding-block: var(--space-md); text-align: left; vertical-align: baseline; }
+  .tariffs th { font-weight: var(--weight-ui); font-size: var(--text-md); padding-inline-end: var(--space-md); }
+  .tariffs td {
+    font-family: var(--font-display); font-weight: var(--weight-display);
+    font-size: var(--text-title); text-align: right; white-space: nowrap;
+  }
+  .tariffs tr:last-child td { color: var(--color-primary); }
+
+  .nurse__actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-md); margin-top: var(--space-lg); }
+  .nurse__actions .btn { width: 100%; }
+  .nurse__actions :global(.future-link) { color: var(--color-primary); }
+
+  @media (min-width: 30rem) {
+    .nurse__actions .btn { width: auto; }
+  }
+  @media (min-width: 48rem) {
+    .tariffs td { font-size: var(--text-index); }
+  }
+  @media (min-width: 64rem) {
+    .nurse__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+    .nurse__head { grid-column: 1 / span 5; }
+    .nurse__body { grid-column: 7 / span 6; }
+  }
+</style>

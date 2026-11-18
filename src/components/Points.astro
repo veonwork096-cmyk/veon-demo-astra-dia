@@ -1,0 +1,100 @@
+---
+import FutureLink from "./FutureLink.astro";
+import CityIndex from "./CityIndex.astro";
+import { uzhhorodAddresses, phone } from "../data/site";
+---
+<section id="punkty" class="section points" data-rec="W-R014,W-R037" aria-labelledby="punkty-title">
+  <div class="container">
+    <div class="points__head">
+      <h2 id="punkty-title">Пункти забору в Закарпатті</h2>
+      <p class="lead">Оберіть свій населений пункт: адреси відкриються нижче.</p>
+    </div>
+
+    <CityIndex />
+
+    <div id="points-panel" class="panel" aria-live="polite" data-panel>
+      <div class="panel__home" data-home>
+        <h3 class="panel__title">Ужгород: <span class="num">{uzhhorodAddresses.length}</span> пунктів забору</h3>
+        <ul class="addresses" role="list">
+          {uzhhorodAddresses.map((a) => (
+            <li class="addresses__street">{a}</li>
+          ))}
+        </ul>
+      </div>
+      <div class="panel__other" data-other hidden>
+        <h3 class="panel__title" data-other-title>Населений пункт</h3>
+        <p class="panel__text">
+          Адреси пунктів уточнюйте за телефоном <a class="panel__phone num" href={phone.href}>{phone.display}</a>
+        </p>
+        <FutureLink note="Сторінка з адресами міста з'явиться в повній версії сайту">Усі адреси міста</FutureLink>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Effect 2: the city index switches the address panel (underline scaleX, panel cross-fade with an 8px shift).
+  const index = document.querySelector<HTMLElement>("[data-index]");
+  const panel = document.querySelector<HTMLElement>("[data-panel]");
+  const home = panel?.querySelector<HTMLElement>("[data-home]");
+  const other = panel?.querySelector<HTMLElement>("[data-other]");
+  const otherTitle = panel?.querySelector<HTMLElement>("[data-other-title]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const select = (city: string) => {
+    if (!index || !panel || !home || !other || !otherTitle) return;
+    index.querySelectorAll<HTMLButtonElement>("[data-city]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.dataset.city === city));
+    });
+    const isHome = city === "Ужгород";
+    home.hidden = !isHome;
+    other.hidden = isHome;
+    if (!isHome) otherTitle.textContent = city;
+    if (!reduce.matches) {
+      panel.classList.remove("is-in");
+      panel.classList.add("is-swapping");
+      void panel.offsetWidth;
+      panel.classList.remove("is-swapping");
+      panel.classList.add("is-in");
+    }
+  };
+
+  index?.addEventListener("click", (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("[data-city]");
+    if (btn?.dataset.city) select(btn.dataset.city);
+  });
+</script>
+
+<style>
+  .points__head { display: grid; gap: var(--space-sm); margin-bottom: var(--space-xl); }
+
+
+  .panel { padding-top: var(--space-lg); transition: opacity var(--dur-swap) var(--ease-out), transform var(--dur-swap) var(--ease-out); }
+  .panel.is-swapping { opacity: 0; transform: translateY(8px); transition: none; }
+  .panel__title { font-size: var(--text-title); margin-bottom: var(--space-md); }
+  .addresses { display: grid; list-style: none; column-gap: var(--gutter); }
+  .addresses li {
+    padding-block: var(--space-sm);
+    border-bottom: var(--line) solid var(--color-border);
+  }
+  .addresses__street { font-family: var(--font-display); font-weight: var(--weight-index); font-size: var(--text-title); line-height: 1.25; }
+  .panel__other { display: grid; justify-items: start; gap: var(--space-sm); }
+  .panel__other[hidden], .panel__home[hidden] { display: none; }
+  .panel__text { font-size: var(--text-lead); max-width: 40ch; }
+  .panel__phone { color: var(--color-action); font-family: var(--font-display); font-weight: var(--weight-display); white-space: nowrap; }
+  .panel__phone:hover { color: var(--color-action-hover); }
+  .panel__other :global(.future-link) { color: var(--color-primary); }
+
+  @media (min-width: 48rem) {
+    .addresses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .addresses { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .points__head { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
+    .points__head h2 { grid-column: 1 / span 6; }
+    .points__head .lead { grid-column: 8 / span 5; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel, .panel.is-swapping { transition: none; transform: none; opacity: 1; }
+  }
+</style>

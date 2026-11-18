@@ -1,0 +1,11 @@
+---
+// A page of the future full site that is not built in the demo (menu item, button, card, footer link).
+// Inactive element with a short note instead of a link: never points to the client's current site.
+interface Props { note?: string; class?: string; align?: "start" | "end"; up?: boolean; rec?: string; }
+const { note = "Розділ у розробці", class: cls, align = "start", up = false, rec } = Astro.props;
+---
+<span class:list={["future-link", cls, { "future-link--end": align === "end", "future-link--up": up }]} role="link" aria-disabled="true" tabindex="0" data-rec={rec}>
+  <slot />
+  <span class="future-link__note" aria-hidden="true">{note}</span>
+  <span class="visually-hidden">({note})</span>
+</span>

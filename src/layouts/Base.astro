@@ -1,0 +1,41 @@
+---
+import "../styles/tokens.css";
+import "../styles/global.css";
+import geologicaCyr from "../assets/fonts/geologica-cyrillic.woff2?url";
+
+interface Props { lang: string; title: string; description: string; canonical?: string; rec?: string; }
+const { lang, title, description, canonical, rec } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add("js")</script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="uk_UA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href={`${base}favicon.png`} />
+    <link rel="preload" href={geologicaCyr} as="font" type="font/woff2" crossorigin />
+    <slot name="head" />
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">{lang.startsWith("uk") ? "До змісту" : lang.startsWith("ru") ? "К содержанию" : "Skip to content"}</a>
+    <slot name="header" />
+    <main id="main" data-rec={rec}><slot /></main>
+    <slot name="footer" />
+    <script src="../scripts/reveal.ts"></script>
+    <script src="../scripts/future.ts"></script>
+  </body>
+</html>
+
+<style is:global>
+  /* Page shell: no horizontal scroll at any width (also set in global.css; repeated here for the layout's own check). */
+  html, body { overflow-x: clip; }
+</style>

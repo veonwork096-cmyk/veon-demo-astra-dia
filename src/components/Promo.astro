@@ -1,0 +1,71 @@
+---
+import FutureLink from "./FutureLink.astro";
+// W-F014: the only running promotion; it hides itself after the end date (concept: «показ акции снять после 31.12.2026»).
+const PROMO_END = "2026-12-31";
+---
+<section id="aktsii" class="section promo" aria-labelledby="aktsii-title">
+  <div class="container">
+    <h2 id="aktsii-title" class="promo__h2">Акції та знижки</h2>
+
+    <article class="offer" data-expires={PROMO_END} aria-labelledby="offer-title">
+      <p class="offer__figure num" aria-hidden="true">&minus;30&#8239;%</p>
+      <div class="offer__text">
+        <h3 id="offer-title" class="offer__title">Здоров'я травної системи</h3>
+        <p class="offer__lead">Комплексна перевірка зі знижкою 30&#8239;%.</p>
+        <p class="offer__date">Діє до <time datetime={PROMO_END}>31.12.2026</time></p>
+        <FutureLink note="Сторінка комплексів з'явиться в повній версії сайту">Склад комплексу</FutureLink>
+      </div>
+    </article>
+
+    <div class="loyalty">
+      <h3 class="loyalty__title">Програма лояльності</h3>
+      <p class="loyalty__text"><strong class="num">3&#8239;%</strong> знижки після накопичення від <span class="num nowrap">7000 грн</span>, <strong class="num">5&#8239;%</strong> від <span class="num nowrap">15000 грн</span>.</p>
+      <FutureLink note="Умови програми з'являться в повній версії сайту">Умови програми</FutureLink>
+    </div>
+  </div>
+</section>
+
+<script>
+  const offer = document.querySelector<HTMLElement>("[data-expires]");
+  if (offer?.dataset.expires) {
+    const end = new Date(`${offer.dataset.expires}T23:59:59+02:00`);
+    if (Date.now() > end.getTime()) offer.hidden = true;
+  }
+</script>
+
+<style>
+  .promo__h2 { margin-bottom: var(--space-xl); }
+  .offer {
+    display: grid; gap: var(--space-md); align-items: end;
+    padding-bottom: var(--space-xl);
+    border-bottom: var(--line) solid var(--color-border);
+  }
+  .offer[hidden] { display: none; }
+  .offer__figure {
+    font-family: var(--font-display); font-weight: var(--weight-display);
+    font-size: var(--text-statement); line-height: .9;
+    color: var(--color-action);
+    white-space: nowrap;
+  }
+  .offer__text { display: grid; justify-items: start; gap: var(--space-sm); }
+  .offer__title { font-size: var(--text-section); }
+  .offer__lead { font-size: var(--text-lead); color: var(--color-muted); }
+  .offer__date { font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-title); color: var(--color-action); }
+  .offer :global(.future-link), .loyalty :global(.future-link) { color: var(--color-primary); }
+
+  .loyalty { display: grid; gap: var(--space-xs); justify-items: start; padding-top: var(--space-lg); }
+  .loyalty__title { font-size: var(--text-title); }
+  .loyalty__text { font-size: var(--text-lead); max-width: 52ch; }
+  .loyalty__text strong { font-family: var(--font-display); font-weight: var(--weight-display); }
+
+  @media (min-width: 64rem) {
+    .offer { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+    .offer__figure { grid-column: 1 / span 6; }
+    .offer__text { grid-column: 7 / span 6; padding-bottom: var(--space-sm); }
+    .loyalty { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: baseline; }
+    .loyalty__title { grid-column: 1 / span 4; }
+    .loyalty__text { grid-column: 5 / span 6; }
+    .loyalty :global(.future-link) { grid-column: 11 / span 2; justify-self: end; }
+    .loyalty :global(.future-link__note[aria-hidden="true"]) { left: auto; right: 0; }
+  }
+</style>

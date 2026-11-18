@@ -1,0 +1,169 @@
+---
+import { Image } from "astro:assets";
+import logo from "../assets/astra-logo.png";
+import Icon from "./Icon.astro";
+import { nav, phone, results } from "../data/site";
+---
+<header class="site-header" data-header data-rec="W-R010,W-R011,W-R033">
+  <div class="container site-header__inner">
+    <a class="logo" href="#holovna" aria-label="Астра-Діа, медична лабораторія: на початок сторінки">
+      <Image src={logo} alt="" width={112} height={112} format="webp" quality={85} loading="eager" class="logo__img" />
+    </a>
+
+    <nav class="nav-desktop" aria-label="Розділи сторінки">
+      <ul>
+        {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <a class="header-phone" href={phone.href} aria-label={`Подзвонити ${phone.display}`}>
+        <Icon name="phone" />
+        <span class="header-phone__num num">{phone.display}</span>
+      </a>
+      <a class="btn btn--primary header-results" href={results.href} target="_blank" rel="noopener">
+        <span>Результати<span class="header-results__more"> онлайн</span></span>
+        <Icon name="external" />
+        <span class="visually-hidden">({results.note} у новій вкладці)</span>
+      </a>
+      <details class="menu" data-menu>
+        <summary class="menu__toggle" aria-label="Меню розділів">
+          <span class="menu__open"><Icon name="menu" /></span>
+          <span class="menu__close"><Icon name="close" /></span>
+        </summary>
+        <nav class="menu__panel" aria-label="Меню розділів">
+          <ul>
+            {nav.map((item) => <li><a href={item.href}>{item.label}</a></li>)}
+          </ul>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Effect 3 (concept «Рух»): the sticky header compacts on scroll. Effect only on wide screens; class toggles via rAF.
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  if (header) {
+    let ticking = false;
+    const update = () => {
+      header.classList.toggle("is-compact", window.scrollY > 24);
+      ticking = false;
+    };
+    window.addEventListener("scroll", () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  }
+  // Mobile menu: <details> works without JS; with JS it closes on a link, on Escape and on an outside click.
+  const menu = document.querySelector<HTMLDetailsElement>("[data-menu]");
+  if (menu) {
+    menu.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).closest("a")) menu.open = false;
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menu.open) { menu.open = false; menu.querySelector("summary")?.focus(); }
+    });
+    document.addEventListener("click", (e) => {
+      if (menu.open && !menu.contains(e.target as Node)) menu.open = false;
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: var(--z-header);
+    background: var(--color-bg);
+    border-bottom: var(--line) solid transparent;
+    transition: border-color var(--dur-ui) var(--ease-out);
+  }
+  .site-header.is-compact { border-bottom-color: var(--color-border); }
+  .site-header__inner {
+    display: flex; align-items: center; gap: var(--space-sm);
+    height: var(--header-h);
+  }
+  .logo { display: block; flex: none; border-radius: 50%; }
+  .logo__img {
+    width: var(--logo); height: var(--logo);
+    transform-origin: left center;
+    transition: transform var(--dur-ui) var(--ease-out);
+  }
+  @media (min-width: 64rem) {
+    .site-header.is-compact .logo__img { transform: scale(.8); }
+  }
+
+  .nav-desktop { display: none; }
+  .nav-desktop ul { display: flex; gap: var(--space-md); list-style: none; }
+  .nav-desktop a, .menu__panel a {
+    color: var(--color-text); text-decoration: none; font-weight: var(--weight-ui); font-size: var(--text-sm);
+    white-space: nowrap;
+    text-decoration-line: underline; text-decoration-color: transparent; text-decoration-thickness: 2px; text-underline-offset: .35em;
+    transition: text-decoration-color var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  }
+  .nav-desktop a { display: inline-flex; align-items: center; min-height: 44px; }
+  .nav-desktop a:hover, .menu__panel a:hover { text-decoration-color: var(--color-primary); color: var(--color-primary); }
+  .nav-desktop a:active, .menu__panel a:active { color: var(--color-field); }
+
+  .site-header__actions { display: flex; align-items: center; gap: var(--space-xs); margin-inline-start: auto; }
+
+  .header-phone {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs);
+    min-width: 44px; min-height: 44px;
+    color: var(--color-action); text-decoration: none; border-radius: var(--radius);
+    transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+  }
+  .header-phone:hover { color: var(--color-action-hover); background: var(--color-surface-alt); }
+  .header-phone:active { transform: scale(.98); }
+  .header-phone__num { display: none; font-family: var(--font-display); font-weight: var(--weight-display); font-size: var(--text-md); white-space: nowrap; }
+
+  .header-results { padding-inline: var(--space-sm); min-height: 44px; font-size: var(--text-sm); }
+  .header-results__more { display: none; }
+  @media (max-width: 22.49rem) {
+    .header-results { padding-inline: var(--space-xs); }
+    .header-results :global(svg) { display: none; }
+    .site-header__inner { gap: var(--space-xs); }
+  }
+
+  .menu { position: static; }
+  .menu__toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: var(--radius);
+    list-style: none; cursor: pointer; color: var(--color-text);
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+  .menu__toggle::-webkit-details-marker { display: none; }
+  .menu__toggle:hover { background: var(--color-surface-alt); }
+  .menu__toggle:active { background: var(--color-border); }
+  .menu__close { display: none; }
+  .menu[open] .menu__open { display: none; }
+  .menu[open] .menu__close { display: block; }
+  .menu__panel {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: var(--color-bg); border-bottom: var(--line) solid var(--color-border);
+    padding-block: var(--space-xs) var(--space-md);
+  }
+  .menu__panel ul { list-style: none; width: min(100% - 2 * var(--space), var(--container)); margin-inline: auto; }
+  .menu__panel li + li { border-top: var(--line) solid var(--color-border); }
+  .menu__panel a { display: flex; align-items: center; min-height: var(--control-h); font-size: var(--text-md); }
+
+  @media (min-width: 30rem) {
+    .header-results__more { display: inline; }
+    .site-header__actions { gap: var(--space-sm); }
+  }
+  @media (min-width: 40rem) {
+    .header-phone { padding-inline: var(--space-xs); }
+    .header-phone__num { display: inline; }
+  }
+  @media (min-width: 64rem) {
+    .header-results { min-height: var(--control-h-desktop); }
+  }
+  @media (min-width: 77.5rem) {
+    .site-header__inner { gap: var(--space-lg); }
+    .nav-desktop { display: block; }
+    .menu { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .site-header.is-compact .logo__img { transform: none; }
+    .header-phone:active { transform: none; }
+  }
+</style>
